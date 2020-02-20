@@ -42,8 +42,8 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 	"gopkg.in/yaml.v3"
 
-	"github.com/prometheus/blackbox_exporter/config"
-	"github.com/prometheus/blackbox_exporter/prober"
+	"github.com/perxteam/blackbox_exporter/config"
+	"github.com/perxteam/blackbox_exporter/prober"
 )
 
 var (
@@ -60,10 +60,11 @@ var (
 	routePrefix   = kingpin.Flag("web.route-prefix", "Prefix for the internal routes of web endpoints. Defaults to path of --web.external-url.").PlaceHolder("<path>").String()
 
 	Probers = map[string]prober.ProbeFn{
-		"http": prober.ProbeHTTP,
-		"tcp":  prober.ProbeTCP,
-		"icmp": prober.ProbeICMP,
-		"dns":  prober.ProbeDNS,
+		"http":   prober.ProbeHTTP,
+		"tcp":    prober.ProbeTCP,
+		"icmp":   prober.ProbeICMP,
+		"dns":    prober.ProbeDNS,
+		"domain": prober.ProbeDomain,
 	}
 )
 

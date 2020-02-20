@@ -1,6 +1,6 @@
-# Blackbox exporter [![Build Status](https://travis-ci.org/prometheus/blackbox_exporter.svg)][travis]
+# Blackbox exporter [![Build Status](https://travis-ci.org/perxteam/blackbox_exporter.svg)][travis]
 
-[![CircleCI](https://circleci.com/gh/prometheus/blackbox_exporter/tree/master.svg?style=shield)][circleci]
+[![CircleCI](https://circleci.com/gh/perxteam/blackbox_exporter/tree/master.svg?style=shield)][circleci]
 [![Docker Repository on Quay](https://quay.io/repository/prometheus/blackbox-exporter/status)][quay]
 [![Docker Pulls](https://img.shields.io/docker/pulls/prom/blackbox-exporter.svg?maxAge=604800)][hub]
 
@@ -11,7 +11,7 @@ HTTP, HTTPS, DNS, TCP and ICMP.
 
 ### From binaries
 
-Download the most suitable binary from [the releases tab](https://github.com/prometheus/blackbox_exporter/releases)
+Download the most suitable binary from [the releases tab](https://github.com/perxteam/blackbox_exporter/releases)
 
 Then:
 
@@ -98,7 +98,7 @@ The ICMP probe requires elevated privileges to function:
   * Can be set by executing `setcap cap_net_raw+ep blackbox_exporter`
 * *BSD / OS X*: root user is required.
 
-[circleci]: https://circleci.com/gh/prometheus/blackbox_exporter
+[circleci]: https://circleci.com/gh/perxteam/blackbox_exporter
 [hub]: https://hub.docker.com/r/prom/blackbox-exporter/
-[travis]: https://travis-ci.org/prometheus/blackbox_exporter
+[travis]: https://travis-ci.org/perxteam/blackbox_exporter
 [quay]: https://quay.io/repository/prometheus/blackbox-exporter

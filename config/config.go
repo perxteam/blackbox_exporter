@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	yaml "gopkg.in/yaml.v3"
+	"gopkg.in/yaml.v3"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/config"
@@ -42,10 +42,11 @@ var (
 
 	// DefaultModule set default configuration for the Module
 	DefaultModule = Module{
-		HTTP: DefaultHTTPProbe,
-		TCP:  DefaultTCPProbe,
-		ICMP: DefaultICMPProbe,
-		DNS:  DefaultDNSProbe,
+		HTTP:   DefaultHTTPProbe,
+		TCP:    DefaultTCPProbe,
+		ICMP:   DefaultICMPProbe,
+		DNS:    DefaultDNSProbe,
+		Domain: DefaultDomainProbe,
 	}
 
 	// DefaultHTTPProbe set default value for HTTPProbe
@@ -65,6 +66,11 @@ var (
 
 	// DefaultDNSProbe set default value for DNSProbe
 	DefaultDNSProbe = DNSProbe{
+		IPProtocolFallback: true,
+	}
+
+	// DefaultDNSProbe set default value for DNSProbe
+	DefaultDomainProbe = DomainProbe{
 		IPProtocolFallback: true,
 	}
 )
@@ -120,6 +126,7 @@ type Module struct {
 	TCP     TCPProbe      `yaml:"tcp,omitempty"`
 	ICMP    ICMPProbe     `yaml:"icmp,omitempty"`
 	DNS     DNSProbe      `yaml:"dns,omitempty"`
+	Domain  DomainProbe   `yaml:"domain,omitempty"`
 }
 
 type HTTPProbe struct {
@@ -190,6 +197,14 @@ type DNSRRValidator struct {
 	FailIfNoneMatchesRegexp []string `yaml:"fail_if_none_matches_regexp,omitempty"`
 }
 
+type DomainProbe struct {
+	IPProtocol         string   `yaml:"preferred_ip_protocol,omitempty"`
+	IPProtocolFallback bool     `yaml:"ip_protocol_fallback,omitempty"`
+	TransportProtocol  string   `yaml:"transport_protocol,omitempty"`
+	DNSServerIpAddress string   `yaml:"dns_server,omitempty"`
+	ValidRecords       []string `yaml:"valid_records,omitempty"`
+}
+
 // UnmarshalYAML implements the yaml.Unmarshaler interface.
 func (s *Config) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	type plain Config
@@ -231,6 +246,19 @@ func (s *DNSProbe) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	}
 	if s.QueryName == "" {
 		return errors.New("query name must be set for DNS module")
+	}
+	return nil
+}
+
+// UnmarshalYAML implements the yaml.Unmarshaler interface.
+func (s *DomainProbe) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	*s = DefaultDomainProbe
+	type plain DomainProbe
+	if err := unmarshal((*plain)(s)); err != nil {
+		return err
+	}
+	if s.DNSServerIpAddress == "" {
+		return errors.New("dns server ip must be set for Domain module")
 	}
 	return nil
 }
